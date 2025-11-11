@@ -525,7 +525,7 @@ const App: React.FC = () => {
           <components.VinylIcon className="text-brand-pink-300" />
         </div>
 
-        <div className="absolute bottom-[15%] right-[2%] sm:bottom-[12%] sm:right-[5%] md:bottom-[8%] md:right-[8%] lg:right-[2%] xl:right-[5%] w-72 sm:w-80 z-20 rotate-[-2deg] transform transition-transform hover:rotate-[-1deg]">
+        <div className="absolute bottom-[10%] right-[2%] sm:bottom-[8%] sm:right-[5%] md:bottom-[4%] md:right-[8%] lg:right-[2%] xl:right-[5%] w-72 sm:w-80 z-20 rotate-[-2deg] transform transition-transform hover:rotate-[-1deg]">
             <h2 className="font-handwriting text-xl text-center text-gray-600 mb-2">
                 <span className="bg-brand-pink-200 px-2 py-0.5">Songs that remind me of you</span>
             </h2>
