@@ -21,7 +21,7 @@ const LetterModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
   return (
     <div 
-      className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 transition-opacity duration-300"
+      className="fixed inset-0 bg-black/60 z-50 flex items-start justify-center p-4 pt-40 transition-opacity duration-300"
       onClick={onClose}
       aria-modal="true"
       role="dialog"
@@ -51,7 +51,7 @@ const TicketModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
   return (
     <div 
-      className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 transition-opacity duration-300"
+      className="fixed inset-0 bg-black/60 z-50 flex items-start justify-center p-4 pt-40 transition-opacity duration-300"
       onClick={onClose}
       aria-modal="true"
       role="dialog"
@@ -432,7 +432,7 @@ const App: React.FC = () => {
     <div className="bg-brand-pink-50 min-h-screen text-gray-700 animate-fade-in">
       {isPainting && paintPosition && <HeartPainter position={paintPosition} onComplete={() => { setIsPainting(false); setPaintPosition(null); }} />}
       
-      <main className="relative max-w-5xl lg:max-w-7xl mx-auto p-4 sm:p-8 md:p-12 h-[130vh] sm:h-[110vh] md:h-screen">
+      <main className="relative max-w-5xl lg:max-w-7xl mx-auto p-4 sm:p-8 md:p-12 h-[150vh] sm:h-[130vh] md:h-screen">
         
         <div className="absolute top-[5%] left-[5%] lg:left-[2%] text-brand-pink-200 opacity-60">
             <components.HeartIcon className="w-10 h-10 sm:w-12 sm:h-12 rotate-[-15deg]"/>
@@ -464,11 +464,11 @@ const App: React.FC = () => {
            </div>
         </div>
 
-        <div className="absolute top-[10%] sm:top-[12%] left-[10%] md:left-[15%] lg:left-[20%] w-16 h-16 rotate-[-25deg] z-20">
+        <div className="absolute top-[10%] left-[10%] sm:top-[12%] sm:left-[15%] md:left-[20%] lg:left-[24%] xl:left-[28%] w-16 h-16 rotate-[-25deg] z-20">
           <components.BinderClipIcon className="text-pink-300 drop-shadow-md"/>
         </div>
 
-        <div className="absolute top-[38%] sm:top-[40%] left-[2%] md:left-[8%] lg:left-[12%] bg-transparent p-2 w-40 sm:w-56 rotate-[-5deg] z-10">
+        <div className="absolute top-[34%] left-[2%] sm:top-[38%] sm:left-[5%] md:left-[8%] lg:left-[2%] xl:left-[5%] bg-transparent p-2 w-40 sm:w-56 rotate-[-5deg] z-10">
           <p className="leading-relaxed font-handwriting text-xl sm:text-2xl">
             <span className="bg-brand-pink-200 px-1">"I will always come looking for you, Angel, and I would burn the whole world down to find you."</span>
           </p>
@@ -476,21 +476,21 @@ const App: React.FC = () => {
 
         <button
           onClick={handlePaintClick}
-          className="absolute top-[25%] left-[8%] md:left-[12%] lg:left-[15%] z-20 w-20 h-20 sm:w-24 sm:h-24 rotate-[15deg] transform transition-all duration-300 hover:scale-110 hover:rotate-[5deg] focus:outline-none group cursor-pointer"
+          className="absolute top-[20%] left-[5%] sm:left-[10%] md:left-[12%] lg:left-[8%] z-20 w-20 h-20 sm:w-24 sm:h-24 rotate-[15deg] transform transition-all duration-300 hover:scale-110 hover:rotate-[5deg] focus:outline-none group cursor-pointer"
           aria-label="Draw a heart"
           disabled={isPainting}
         >
           <components.PaintBrushIcon className="w-full h-full drop-shadow-lg" />
         </button>
 
-         <button onClick={openTicket} className="absolute top-[58%] sm:top-[65%] left-[5%] md:left-[8%] lg:left-[12%] bg-[#f5eadd] p-3 rounded-lg shadow-md rotate-[8deg] z-10 w-40 transform hover:rotate-6 transition-transform focus:outline-none focus:ring-2 focus:ring-brand-pink-400">
+         <button onClick={openTicket} className="absolute top-[80%] left-[2%] sm:top-[75%] sm:left-[5%] md:top-[65%] md:left-[8%] lg:left-[2%] xl:left-[5%] bg-[#f5eadd] p-3 rounded-lg shadow-md rotate-[8deg] z-10 w-40 transform hover:rotate-6 transition-transform focus:outline-none focus:ring-2 focus:ring-brand-pink-400">
             <div className="border-2 border-dashed border-[#d3c0a9] p-2 text-center">
                 <p className="font-bold text-[#b59f84] text-xs">TICKET TO</p>
                 <p className="text-2xl font-handwriting text-[#b59f84]">Happiness</p>
             </div>
         </button>
         
-        <button onClick={openLetter} className="absolute bottom-[2%] sm:bottom-[5%] left-[5%] md:left-[8%] lg:left-[12%] w-32 h-32 rotate-[-10deg] transform hover:scale-110 transition-transform z-10 cursor-pointer focus:outline-none focus:ring-2 focus:ring-brand-pink-400 rounded-full" aria-label="Open letter">
+        <button onClick={openLetter} className="absolute bottom-[5%] left-[2%] sm:bottom-[8%] sm:left-[5%] md:bottom-[5%] md:left-[8%] lg:left-[2%] xl:left-[5%] w-32 h-32 rotate-[-10deg] transform hover:scale-110 transition-transform z-10 cursor-pointer focus:outline-none focus:ring-2 focus:ring-brand-pink-400 rounded-full" aria-label="Open letter">
             <components.EnvelopeIcon />
         </button>
 
@@ -498,11 +498,11 @@ const App: React.FC = () => {
             <components.BookIcon className="w-4 h-4" /> Read me ♡
         </button>
         
-        <div className="absolute top-[12%] sm:top-[15%] right-[10%] md:right-[12%] lg:right-[18%] w-16 h-16 rotate-12 z-20">
+        <div className="absolute top-[12%] right-[10%] sm:top-[15%] sm:right-[15%] md:right-[20%] lg:right-[24%] xl:right-[28%] w-16 h-16 rotate-12 z-20">
             <components.WaxSealIcon className="text-brand-pink-400 drop-shadow-lg" />
         </div>
 
-        <div className="absolute top-[28%] sm:top-[30%] right-[2%] md:right-[8%] lg:right-[12%] bg-[#fef6e4] p-4 rounded-lg shadow-lg w-44 sm:w-56 rotate-6 transform transition-transform hover:rotate-3 z-10">
+        <div className="absolute top-[30%] right-[2%] sm:top-[32%] sm:right-[5%] md:right-[8%] lg:right-[2%] xl:right-[5%] bg-[#fef6e4] p-4 rounded-lg shadow-lg w-44 sm:w-56 rotate-6 transform transition-transform hover:rotate-3 z-10">
             <p className="font-handwriting text-xl sm:text-2xl leading-tight text-gray-600">
                 Lights will guide you home, and ignite your bones, and I will try to fix you.
             </p>
@@ -513,7 +513,7 @@ const App: React.FC = () => {
              </div>
         </div>
 
-        <div className="absolute top-[55%] sm:top-[60%] right-[8%] md:right-[12%] lg:right-[15%] w-24 h-24 rotate-[-3deg] z-10">
+        <div className="absolute top-[78%] right-[2%] sm:top-[72%] sm:right-[5%] md:top-[60%] md:right-[12%] lg:right-[8%] w-24 h-24 rotate-[-3deg] z-10">
             <components.CandleIcon />
         </div>
 
@@ -525,7 +525,7 @@ const App: React.FC = () => {
           <components.VinylIcon className="text-brand-pink-300" />
         </div>
 
-        <div className="absolute bottom-[5%] right-[2%] sm:right-[5%] md:right-[8%] lg:right-[12%] w-72 sm:w-80 z-20 rotate-[-2deg] transform transition-transform hover:rotate-[-1deg]">
+        <div className="absolute bottom-[15%] right-[2%] sm:bottom-[12%] sm:right-[5%] md:bottom-[8%] md:right-[8%] lg:right-[2%] xl:right-[5%] w-72 sm:w-80 z-20 rotate-[-2deg] transform transition-transform hover:rotate-[-1deg]">
             <h2 className="font-handwriting text-xl text-center text-gray-600 mb-2">
                 <span className="bg-brand-pink-200 px-2 py-0.5">Songs that remind me of you</span>
             </h2>
