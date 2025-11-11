@@ -48,13 +48,29 @@ const BinderClipIcon: React.FC<IconProps> = ({ className }) => (
 
 // Icona della busta da lettere, con un cuore al centro.
 const EnvelopeIcon: React.FC<IconProps> = ({ className }) => (
-    <div className={`relative ${className}`}>
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M2 8.5L12 15.5L22 8.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            <path d="M2 18.5H22V5.5H2V18.5Z" fill="#FFFFFF" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <div className={`relative ${className} w-full h-full`}>
+        {/* The main SVG for the envelope */}
+        <svg viewBox="0 0 100 75" className="w-full h-full drop-shadow-md">
+            {/* Main body of the envelope (back part) */}
+            <path d="M0 5 H100 V70 H0 Z" fill="#fef6e4" stroke="#d3c0a9" strokeWidth="0.5" />
+            
+            {/* Left and right side flaps */}
+            <path d="M0 5 L50 37.5 L0 70 Z" fill="#f5eadd" />
+            <path d="M100 5 L50 37.5 L100 70 Z" fill="#f5eadd" />
+
+            {/* Bottom flap */}
+            <path d="M0 70 L50 37.5 L100 70 Z" fill="#fef6e4" />
+            
+            {/* Top flap (the one that seals) */}
+            <path d="M0 5 L50 37.5 L100 5 Z" fill="#f5eadd" />
+
+            {/* Redraw outlines to be on top */}
+            <path d="M0 5 L50 37.5 L100 5 M50 37.5 L0 70 M50 37.5 L100 70" fill="none" stroke="#d3c0a9" strokeWidth="0.5" />
         </svg>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[80%] text-brand-pink-400">
-            <HeartIcon className="w-5 h-5"/>
+        
+        {/* Heart seal positioned over the flap's point */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[45%] text-brand-pink-400">
+            <HeartIcon className="w-1/4 h-1/4 drop-shadow-sm" />
         </div>
     </div>
 );

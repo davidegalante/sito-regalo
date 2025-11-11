@@ -16,7 +16,5 @@ export interface Song {
 
 // Aggiungi qui i percorsi ai tuoi file MP3
 export const initialPlaylistPaths: string[] = [
-    '/cardigan.mp3',
-    '/lover.mp3',
-    '/wood.mp3'
+    '/cardigan.mp3'
 ];

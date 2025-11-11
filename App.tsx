@@ -21,7 +21,7 @@ const LetterModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
   return (
     <div 
-      className="fixed inset-0 bg-black/60 z-50 flex items-start justify-center p-4 pt-40 transition-opacity duration-300"
+      className="fixed inset-0 bg-black/60 z-50 flex items-start justify-center p-4 pt-28 sm:pt-40 transition-opacity duration-300"
       onClick={onClose}
       aria-modal="true"
       role="dialog"
@@ -51,7 +51,7 @@ const TicketModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
   return (
     <div 
-      className="fixed inset-0 bg-black/60 z-50 flex items-start justify-center p-4 pt-40 transition-opacity duration-300"
+      className="fixed inset-0 bg-black/60 z-50 flex items-start justify-center p-4 pt-28 sm:pt-40 transition-opacity duration-300"
       onClick={onClose}
       aria-modal="true"
       role="dialog"
@@ -93,6 +93,65 @@ const TicketModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
     </div>
   );
 };
+
+// --- Componente Modale per la Foto ---
+const PhotoModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
+    const [isFlipped, setIsFlipped] = useState(false);
+
+    useEffect(() => {
+        if (!isOpen) {
+            const timer = setTimeout(() => setIsFlipped(false), 300); // Reset after closing animation
+            return () => clearTimeout(timer);
+        }
+    }, [isOpen]);
+
+    if (!isOpen) return null;
+
+    return (
+        <div
+            className="fixed inset-0 bg-black/70 z-50 flex items-start justify-center p-4 pt-28 sm:pt-40 transition-opacity duration-300 animate-fade-in"
+            onClick={onClose}
+            aria-modal="true"
+            role="dialog"
+        >
+            <div
+                className="relative w-full max-w-sm sm:max-w-md lg:max-w-lg cursor-pointer group outline-none"
+                style={{ perspective: '1200px' }}
+                onClick={(e) => {
+                    e.stopPropagation();
+                    setIsFlipped(!isFlipped);
+                }}
+            >
+                <div
+                    className="relative w-full transition-transform duration-700 ease-in-out"
+                    style={{ transformStyle: 'preserve-3d', transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)', aspectRatio: '4/5' }}
+                >
+                    {/* Fronte: Foto */}
+                    <div className="absolute w-full h-full" style={{ backfaceVisibility: 'hidden' }}>
+                        <img src="https://i.imgur.com/AOQzuBM.jpeg" alt="Zoomed in photo of two penguins" className="w-full h-full object-cover rounded-xl shadow-2xl" />
+                         <div className="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl">
+                            <p className="text-white font-bold text-lg">Click to flip</p>
+                        </div>
+                    </div>
+
+                    {/* Retro: Messaggio */}
+                    <div className="absolute w-full h-full bg-[#fef6e4] p-8 sm:p-12 rounded-xl shadow-2xl flex items-center justify-center" style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}>
+                        <div className="text-center text-gray-700 font-handwriting">
+                            <p className="text-2xl sm:text-4xl leading-relaxed">
+                                Every moment with you<br/>is my favorite memory.<br/>You are my home.
+                            </p>
+                            <p className="mt-8 text-3xl text-brand-pink-400">♡</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button onClick={onClose} className="absolute top-4 right-4 text-white/70 hover:text-white" aria-label="Close photo view">
+              <components.CloseIcon className="w-8 h-8" />
+            </button>
+        </div>
+    );
+};
+
 
 // --- Animazione del Cuore Disegnato ---
 const HeartPainter: React.FC<{ onComplete: () => void; position: { x: number; y: number } }> = ({ onComplete, position }) => {
@@ -406,6 +465,7 @@ const App: React.FC = () => {
   const [isUnlocked, setIsUnlocked] = useState(false);
   const [isLetterOpen, setIsLetterOpen] = useState(false);
   const [isTicketOpen, setIsTicketOpen] = useState(false);
+  const [isPhotoModalOpen, setIsPhotoModalOpen] = useState(false);
   const [isPainting, setIsPainting] = useState(false);
   const [paintPosition, setPaintPosition] = useState<{ x: number; y: number } | null>(null);
 
@@ -417,6 +477,8 @@ const App: React.FC = () => {
   const closeLetter = () => setIsLetterOpen(false);
   const openTicket = () => setIsTicketOpen(true);
   const closeTicket = () => setIsTicketOpen(false);
+  const openPhotoModal = () => setIsPhotoModalOpen(true);
+  const closePhotoModal = () => setIsPhotoModalOpen(false);
 
   const handlePaintClick = () => {
     if (isPainting) return;
@@ -432,7 +494,7 @@ const App: React.FC = () => {
     <div className="bg-brand-pink-50 min-h-screen text-gray-700 animate-fade-in">
       {isPainting && paintPosition && <HeartPainter position={paintPosition} onComplete={() => { setIsPainting(false); setPaintPosition(null); }} />}
       
-      <main className="relative max-w-5xl lg:max-w-7xl mx-auto p-4 sm:p-8 md:p-12 h-[150vh] sm:h-[130vh] md:h-screen">
+      <main className="relative max-w-5xl lg:max-w-7xl mx-auto p-4 sm:p-8 md:p-12 h-[200vh] sm:h-[150vh] md:h-screen">
         
         <div className="absolute top-[5%] left-[5%] lg:left-[2%] text-brand-pink-200 opacity-60">
             <components.HeartIcon className="w-10 h-10 sm:w-12 sm:h-12 rotate-[-15deg]"/>
@@ -440,7 +502,7 @@ const App: React.FC = () => {
         <div className="absolute top-[20%] right-[10%] lg:right-[5%] text-brand-pink-200 opacity-60">
             <components.StarIcon className="w-6 h-6 sm:w-8 sm:h-8"/>
         </div>
-        <div className="absolute bottom-[10%] left-[15%] lg:left-[10%] text-brand-pink-200 opacity-60">
+        <div className="absolute bottom-[25%] left-[15%] lg:bottom-[10%] lg:left-[10%] text-brand-pink-200 opacity-60">
             <components.SparkleIcon className="w-8 h-8 sm:w-10 sm:h-10 rotate-12"/>
         </div>
 
@@ -450,25 +512,29 @@ const App: React.FC = () => {
           <p className="text-sm"><b>From:</b> your loving BF</p>
         </div>
 
-        <a href="#section-start" className="absolute top-[18%] sm:top-[20%] left-1/2 -translate-x-1/2 bg-gray-100 px-6 py-2 rounded-full shadow-md hover:shadow-lg transition-transform hover:scale-105 z-10 text-sm">
+        <a href="#section-start" className="absolute top-[15%] sm:top-[20%] left-1/2 -translate-x-1/2 bg-gray-100 px-6 py-2 rounded-full shadow-md hover:shadow-lg transition-transform hover:scale-105 z-10 text-sm outline-none focus:outline-none">
           01 — Start here!
         </a>
 
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[240px] h-[300px] sm:w-[320px] sm:h-[400px] lg:w-[380px] lg:h-[475px] bg-white p-3 rounded-lg shadow-2xl rotate-2 transform hover:scale-105 transition-transform duration-300 z-20">
-          <img src="https://i.imgur.com/AOQzuBM.jpeg" alt="Foto di due pinguini che si guardano in Antartide" className="w-full h-full object-cover rounded-md"/>
-           <div className="absolute -top-4 -left-4 text-brand-pink-300 z-30">
-              <components.HeartIcon className="w-8 h-8"/>
-           </div>
+        <button
+            onClick={openPhotoModal}
+            className="absolute top-[48%] md:top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[240px] h-[300px] sm:w-[320px] sm:h-[400px] lg:w-[380px] lg:h-[475px] bg-white p-3 rounded-lg shadow-2xl rotate-2 transform hover:scale-105 transition-transform duration-300 z-20 cursor-pointer outline-none focus:outline-none"
+            aria-label="View photo and secret message"
+        >
+            <img src="https://i.imgur.com/AOQzuBM.jpeg" alt="Foto di due pinguini che si guardano in Antartide" className="w-full h-full object-cover rounded-md"/>
+            <div className="absolute -top-4 -left-4 text-brand-pink-300 z-30">
+                <components.HeartIcon className="w-8 h-8"/>
+            </div>
             <div className="absolute -bottom-3 -right-3 text-brand-pink-300 z-30">
-              <components.HeartIcon className="w-10 h-10 rotate-12"/>
-           </div>
-        </div>
+                <components.HeartIcon className="w-10 h-10 rotate-12"/>
+            </div>
+        </button>
 
-        <div className="absolute top-[10%] left-[10%] sm:top-[12%] sm:left-[15%] md:left-[20%] lg:left-[24%] xl:left-[28%] w-16 h-16 rotate-[-25deg] z-20">
+        <div className="absolute top-[38%] left-[calc(50%-130px)] sm:top-[12%] sm:left-[15%] md:left-[20%] lg:left-[24%] xl:left-[28%] w-16 h-16 rotate-[-25deg] z-20">
           <components.BinderClipIcon className="text-pink-300 drop-shadow-md"/>
         </div>
 
-        <div className="absolute top-[34%] left-[2%] sm:top-[38%] sm:left-[5%] md:left-[8%] lg:left-[2%] xl:left-[5%] bg-transparent p-2 w-40 sm:w-56 rotate-[-5deg] z-10">
+        <div className="absolute top-[25%] left-[5%] w-44 rotate-[-8deg] sm:w-56 sm:top-[38%] sm:left-[5%] md:left-[8%] lg:left-[2%] xl:left-[5%] bg-transparent p-2 z-10">
           <p className="leading-relaxed font-handwriting text-xl sm:text-2xl">
             <span className="bg-brand-pink-200 px-1">"I will always come looking for you, Angel, and I would burn the whole world down to find you."</span>
           </p>
@@ -476,33 +542,33 @@ const App: React.FC = () => {
 
         <button
           onClick={handlePaintClick}
-          className="absolute top-[20%] left-[5%] sm:left-[10%] md:left-[12%] lg:left-[8%] z-20 w-20 h-20 sm:w-24 sm:h-24 rotate-[15deg] transform transition-all duration-300 hover:scale-110 hover:rotate-[5deg] focus:outline-none group cursor-pointer"
+          className="absolute top-[22%] left-[10%] w-16 h-16 rotate-[15deg] sm:w-24 sm:h-24 sm:top-[20%] sm:left-[10%] md:left-[12%] lg:left-[8%] z-20 transform transition-all duration-300 hover:scale-110 hover:rotate-[5deg] outline-none focus:outline-none group cursor-pointer"
           aria-label="Draw a heart"
           disabled={isPainting}
         >
           <components.PaintBrushIcon className="w-full h-full drop-shadow-lg" />
         </button>
 
-         <button onClick={openTicket} className="absolute top-[80%] left-[2%] sm:top-[75%] sm:left-[5%] md:top-[65%] md:left-[8%] lg:left-[2%] xl:left-[5%] bg-[#f5eadd] p-3 rounded-lg shadow-md rotate-[8deg] z-10 w-40 transform hover:rotate-6 transition-transform focus:outline-none focus:ring-2 focus:ring-brand-pink-400">
+         <button onClick={openTicket} className="absolute top-[75%] left-[5%] w-40 rotate-[8deg] sm:top-[75%] sm:left-[5%] md:top-[65%] md:left-[8%] lg:left-[2%] xl:left-[5%] bg-[#f5eadd] p-3 rounded-lg shadow-md z-10 transform hover:rotate-6 transition-transform outline-none focus:outline-none">
             <div className="border-2 border-dashed border-[#d3c0a9] p-2 text-center">
                 <p className="font-bold text-[#b59f84] text-xs">TICKET TO</p>
                 <p className="text-2xl font-handwriting text-[#b59f84]">Happiness</p>
             </div>
         </button>
         
-        <button onClick={openLetter} className="absolute bottom-[5%] left-[2%] sm:bottom-[8%] sm:left-[5%] md:bottom-[5%] md:left-[8%] lg:left-[2%] xl:left-[5%] w-32 h-32 rotate-[-10deg] transform hover:scale-110 transition-transform z-10 cursor-pointer focus:outline-none focus:ring-2 focus:ring-brand-pink-400 rounded-full" aria-label="Open letter">
+        <button onClick={openLetter} className="absolute top-[88%] left-[10%] w-28 h-28 rotate-[-10deg] sm:w-32 sm:h-32 sm:top-auto sm:bottom-[8%] sm:left-[5%] md:bottom-[5%] md:left-[8%] lg:left-[2%] xl:left-[5%] transform hover:scale-110 transition-transform z-10 cursor-pointer outline-none focus:outline-none rounded-lg" aria-label="Open letter">
             <components.EnvelopeIcon />
         </button>
 
-        <button onClick={openLetter} className="absolute top-1/2 left-1/2 -translate-x-1/2 transform translate-y-[170px] sm:translate-y-[230px] lg:translate-y-[270px] bg-white px-4 py-2 rounded-md shadow-md hover:shadow-lg transition-transform hover:scale-105 z-30 text-sm flex items-center gap-2 cursor-pointer">
+        <button onClick={openLetter} className="absolute top-1/2 left-1/2 -translate-x-1/2 transform translate-y-[170px] sm:translate-y-[230px] lg:translate-y-[270px] bg-white px-4 py-2 rounded-md shadow-md hover:shadow-lg transition-transform hover:scale-105 z-30 text-sm flex items-center gap-2 cursor-pointer outline-none focus:outline-none">
             <components.BookIcon className="w-4 h-4" /> Read me ♡
         </button>
         
-        <div className="absolute top-[12%] right-[10%] sm:top-[15%] sm:right-[15%] md:right-[20%] lg:right-[24%] xl:right-[28%] w-16 h-16 rotate-12 z-20">
+        <div className="absolute top-[20%] right-[15%] w-16 h-16 rotate-12 sm:top-[15%] sm:right-[15%] md:right-[20%] lg:right-[24%] xl:right-[28%] z-20">
             <components.WaxSealIcon className="text-brand-pink-400 drop-shadow-lg" />
         </div>
 
-        <div className="absolute top-[30%] right-[2%] sm:top-[32%] sm:right-[5%] md:right-[8%] lg:right-[2%] xl:right-[5%] bg-[#fef6e4] p-4 rounded-lg shadow-lg w-44 sm:w-56 rotate-6 transform transition-transform hover:rotate-3 z-10">
+        <div className="absolute top-[28%] right-[5%] w-44 rotate-6 sm:w-56 sm:top-[32%] sm:right-[5%] md:right-[8%] lg:right-[2%] xl:right-[5%] bg-[#fef6e4] p-4 rounded-lg shadow-lg transform transition-transform hover:rotate-3 z-10">
             <p className="font-handwriting text-xl sm:text-2xl leading-tight text-gray-600">
                 Lights will guide you home, and ignite your bones, and I will try to fix you.
             </p>
@@ -513,11 +579,11 @@ const App: React.FC = () => {
              </div>
         </div>
 
-        <div className="absolute top-[78%] right-[2%] sm:top-[72%] sm:right-[5%] md:top-[60%] md:right-[12%] lg:right-[8%] w-24 h-24 rotate-[-3deg] z-10">
+        <div className="absolute top-[78%] right-[8%] w-20 h-24 rotate-[-3deg] sm:w-24 sm:top-[72%] sm:right-[5%] md:top-[60%] md:right-[12%] lg:right-[8%] z-10">
             <components.CandleIcon />
         </div>
 
-        <a href="#section-love" className="absolute bottom-[1%] sm:bottom-0 left-1/2 -translate-x-1/2 bg-gray-100 px-6 py-2 rounded-full shadow-md hover:shadow-lg transition-transform hover:scale-105 z-10 text-sm">
+        <a href="#section-love" className="absolute bottom-[20%] sm:bottom-0 left-1/2 -translate-x-1/2 bg-gray-100 px-6 py-2 rounded-full shadow-md hover:shadow-lg transition-transform hover:scale-105 z-10 text-sm outline-none focus:outline-none">
           02 — Things I love about you ♡
         </a>
         
@@ -525,7 +591,7 @@ const App: React.FC = () => {
           <components.VinylIcon className="text-brand-pink-300" />
         </div>
 
-        <div className="absolute bottom-[10%] right-[2%] sm:bottom-[8%] sm:right-[5%] md:bottom-[4%] md:right-[8%] lg:right-[2%] xl:right-[5%] w-72 sm:w-80 z-20 rotate-[-2deg] transform transition-transform hover:rotate-[-1deg]">
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-[90%] max-w-xs rotate-0 sm:w-80 sm:left-auto sm:right-5 sm:-translate-x-0 sm:bottom-[8%] md:bottom-[4%] md:right-[8%] lg:right-[2%] xl:right-[5%] sm:rotate-[-2deg] z-20 transform transition-transform hover:rotate-[-1deg]">
             <h2 className="font-handwriting text-xl text-center text-gray-600 mb-2">
                 <span className="bg-brand-pink-200 px-2 py-0.5">Songs that remind me of you</span>
             </h2>
@@ -568,6 +634,7 @@ const App: React.FC = () => {
       
       <LetterModal isOpen={isLetterOpen} onClose={closeLetter} />
       <TicketModal isOpen={isTicketOpen} onClose={closeTicket} />
+      <PhotoModal isOpen={isPhotoModalOpen} onClose={closePhotoModal} />
     </div>
   );
 };
