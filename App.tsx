@@ -549,14 +549,14 @@ const App: React.FC = () => {
           <components.PaintBrushIcon className="w-full h-full drop-shadow-lg" />
         </button>
 
-         <button onClick={openTicket} className="absolute top-[75%] left-[5%] w-40 rotate-[8deg] sm:top-[75%] sm:left-[5%] md:top-[65%] md:left-[8%] lg:left-[2%] xl:left-[5%] bg-[#f5eadd] p-3 rounded-lg shadow-md z-10 transform hover:rotate-6 transition-transform outline-none focus:outline-none">
-            <div className="border-2 border-dashed border-[#d3c0a9] p-2 text-center">
-                <p className="font-bold text-[#b59f84] text-xs">TICKET TO</p>
-                <p className="text-2xl font-handwriting text-[#b59f84]">Happiness</p>
+         <button onClick={openTicket} className="absolute top-[72%] left-[5%] w-36 rotate-[8deg] sm:top-[72%] sm:left-[5%] md:top-[62%] md:left-[8%] lg:left-[2%] xl:left-[5%] bg-yellow-200 p-3 rounded-lg shadow-md z-10 transform hover:rotate-6 transition-transform outline-none focus:outline-none">
+            <div className="border-2 border-dashed border-red-300 p-2 text-center">
+                <p className="font-bold text-red-500 text-xs">TICKET TO</p>
+                <p className="text-2xl font-handwriting text-red-500">Happiness</p>
             </div>
         </button>
         
-        <button onClick={openLetter} className="absolute top-[88%] left-[10%] w-28 h-28 rotate-[-10deg] sm:w-32 sm:h-32 sm:top-auto sm:bottom-[8%] sm:left-[5%] md:bottom-[5%] md:left-[8%] lg:left-[2%] xl:left-[5%] transform hover:scale-110 transition-transform z-10 cursor-pointer outline-none focus:outline-none rounded-lg" aria-label="Open letter">
+        <button onClick={openLetter} className="absolute top-[88%] left-[10%] w-28 h-28 rotate-[-10deg] sm:w-32 sm:h-32 sm:top-auto sm:bottom-[18%] sm:left-[5%] md:bottom-[15%] md:left-[8%] lg:left-[2%] xl:left-[5%] transform hover:scale-110 transition-transform z-10 cursor-pointer outline-none focus:outline-none rounded-lg" aria-label="Open letter">
             <components.EnvelopeIcon />
         </button>
 
