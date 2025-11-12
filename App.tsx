@@ -65,7 +65,7 @@ const LetterModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
 
   useEffect(() => {
     if (isOpen) {
-      setTopPosition(window.scrollY + 140); // posizione dinamica
+      setTopPosition(window.scrollY + 200); // posizione dinamica
     }
   }, [isOpen]);
 
@@ -118,7 +118,7 @@ const TicketModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
 
   useEffect(() => {
     if (isOpen) {
-      setTopPosition(window.scrollY + 140);
+      setTopPosition(window.scrollY + 200);
     }
   }, [isOpen]);
 
@@ -685,6 +685,12 @@ const App: React.FC = () => {
 
         <div className="relative w-16 h-16 rotate-12 z-20 md:absolute md:top-[15%] md:right-[15%] lg:md:right-[24%] xl:md:right-[28%]">
             <components.WaxSealIcon className="text-brand-pink-400 drop-shadow-lg" />
+        </div>
+
+        <div className="hidden md:block relative w-44 rotate-[8deg] sm:w-56 bg-transparent p-2 z-10 md:absolute md:top-[10%] md:right-[8%] lg:md:right-[5%] xl:md:right-[8%]">
+          <p className="leading-relaxed font-handwriting text-xl sm:text-2xl text-right">
+            <span className="bg-brand-pink-200 px-1">"I will always come looking for you, Angel, and I would burn the whole world down to find you."</span>
+          </p>
         </div>
 
         <div className="relative w-44 rotate-6 sm:w-56 bg-[#fef6e4] p-4 rounded-lg shadow-lg transform transition-transform hover:rotate-3 z-10 md:absolute md:top-[32%] md:right-[5%] lg:md:right-[2%] xl:md:right-[5%]">
