@@ -30,14 +30,14 @@ class ErrorBoundary extends Component<Props, State> {
     if (this.state.hasError) {
       return (
         <div className="bg-brand-pink-50 min-h-screen flex flex-col items-center justify-center p-4 text-center">
-          <h1 className="text-2xl font-bold text-brand-pink-500 mb-4">Oops! Something went wrong.</h1>
-          <p className="text-gray-600">Failed to load the app. Try reloading it.</p>
+          <h1 className="text-2xl font-bold text-brand-pink-500 mb-4">Oops! Qualcosa è andato storto.</h1>
+          <p className="text-gray-600">Impossibile caricare l'app. Prova a ricaricarla.</p>
           <button
             onClick={() => window.location.reload()}
             className="mt-6 bg-brand-pink-400 text-white px-6 py-2 rounded-full shadow-md hover:shadow-lg transition-transform hover:scale-105"
-            aria-label="Reload the application"
+            aria-label="Ricarica l'applicazione"
           >
-            Reload
+            Ricarica
           </button>
         </div>
       );

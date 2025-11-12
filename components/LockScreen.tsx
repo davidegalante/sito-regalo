@@ -78,8 +78,8 @@ export const LockScreen: React.FC<LockScreenProps> = ({ onUnlock }) => {
     // Contenitore principale con animazione di fade-out e zoom-in allo sblocco.
     <div className={`bg-gradient-to-br from-brand-pink-100 to-brand-pink-200 min-h-screen flex flex-col items-center justify-center p-4 transform transition-all duration-700 ease-in-out ${isUnlocked ? 'opacity-0 scale-110' : 'opacity-100 scale-100'}`}>
       <div className="text-center mb-8">
-        <h1 className="font-handwriting text-5xl text-brand-pink-500">A Secret Passage</h1>
-        <p className="text-gray-500 mt-2">Only you hold the key...</p>
+        <h1 className="font-handwriting text-5xl text-brand-pink-500">Un Passaggio Segreto</h1>
+        <p className="text-gray-500 mt-2">Solo tu hai la chiave...</p>
       </div>
 
       {/* --- Assemblaggio del lucchetto --- */}
@@ -114,7 +114,7 @@ export const LockScreen: React.FC<LockScreenProps> = ({ onUnlock }) => {
            {/* Messaggio di benvenuto che appare allo sblocco */}
            <div className="h-6 text-center">
              {isUnlocked && (
-               <p className="font-handwriting text-2xl text-white animate-fade-in">Welcome, my love!</p>
+               <p className="font-handwriting text-2xl text-white animate-fade-in">Benvenuta, amore mio!</p>
              )}
            </div>
 
@@ -124,7 +124,7 @@ export const LockScreen: React.FC<LockScreenProps> = ({ onUnlock }) => {
       {/* Suggerimento per il codice */}
       <div className="mt-8 text-center">
         <p className="font-handwriting text-xl text-gray-600 inline-block px-2 bg-brand-pink-200/70 rounded">
-          hint: look closely at the gift :)
+          suggerimento: guarda attentamente il regalo :)
         </p>
       </div>
     </div>

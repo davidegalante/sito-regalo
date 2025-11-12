@@ -16,103 +16,163 @@ declare global {
   }
 }
 
+// --- Componente Modale di Benvenuto ---
+// Questo componente mostra un popup di benvenuto quando l'utente sblocca l'applicazione.
+const WelcomeModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
+  // Se la prop 'isOpen' è false, il componente non renderizza nulla (restituisce null).
+  if (!isOpen) return null;
+
+  // Renderizza il modale.
+  return (
+    // Contenitore principale (overlay).
+    // - `fixed inset-0`: Copre l'intera viewport.
+    // - `bg-black/70`: Sfondo nero semi-trasparente.
+    // - `z-[100]`: Si assicura che sia sopra a tutti gli altri contenuti.
+    // - `flex items-start justify-center pt-40`: Allinea il contenuto in alto (con padding) e al centro orizzontalmente.
+    // - `cursor-pointer`: Indica che l'area è cliccabile (per chiudere il modale).
+    <div
+      className="fixed inset-0 bg-black/70 z-[100] flex items-start justify-center pt-40 transition-opacity duration-500 animate-fade-in cursor-pointer"
+      onClick={onClose} // Chiude il modale quando si clicca sull'overlay.
+      aria-modal="true" // Proprietà di accessibilità per indicare che è un modale.
+      role="dialog"     // Ruolo di accessibilità.
+    >
+      {/* Box del contenuto del modale. */}
+      {/* L'evento onClick con stopPropagation impedisce la chiusura del modale se si clicca sul box stesso. */}
+      <div
+        className="bg-[#fef6e4] p-8 sm:p-12 rounded-lg shadow-2xl w-[95%] max-w-lg text-center relative animate-fade-in"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Titolo del modale. */}
+        <h2 className="font-handwriting text-3xl sm:text-4xl text-brand-pink-500 mb-4">Benvenuta!</h2>
+        {/* Testo di benvenuto. */}
+        <p className="text-gray-700 text-base sm:text-lg leading-relaxed">
+          Hai appena aperto le porte di questo piccolo mondo segreto.
+          <br/><br/>
+          Molti oggetti sulla pagina sono interattivi e nascondono delle sorprese.
+          Tocca, clicca ed esplora per scoprirle tutte!
+        </p>
+        {/* Suggerimento per l'utente su come chiudere il modale. */}
+         <p className="text-xs text-gray-400 mt-6">(Clicca ovunque per iniziare)</p>
+      </div>
+    </div>
+  );
+};
+
+
 // --- Componente Modale per la Lettera ---
 const LetterModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   const [topPosition, setTopPosition] = useState(0);
 
   useEffect(() => {
     if (isOpen) {
-      setTopPosition(window.scrollY + 190);
+      setTopPosition(window.scrollY + 140); // posizione dinamica
     }
   }, [isOpen]);
 
   if (!isOpen) return null;
+
   return (
     <div
-      className="fixed inset-0 bg-black/60 z-50 transition-opacity duration-300"
+      className="fixed inset-0 bg-black/70 z-[100] flex items-start justify-center transition-opacity duration-500 animate-fade-in cursor-pointer"
       onClick={onClose}
       aria-modal="true"
       role="dialog"
     >
       <div
-        className="absolute bg-[#fef6e4] p-8 sm:p-12 rounded-lg shadow-2xl w-[95%] max-w-2xl animate-fade-in max-h-[90vh] overflow-y-auto"
-        style={{
-          top: `${topPosition}px`,
-          left: '30%',
-          transform: 'translateX(-0%)',
-        }}
+        className="bg-[#fef6e4] p-8 sm:p-12 rounded-lg shadow-2xl w-[95%] max-w-2xl text-gray-700 animate-fade-in max-h-[90vh] overflow-y-auto relative cursor-default"
+        style={{ marginTop: `${topPosition}px` }}
         onClick={(e) => e.stopPropagation()}
       >
-        <button onClick={onClose} className="absolute top-4 right-4 text-gray-500 hover:text-gray-800" aria-label="Close letter">
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 text-gray-500 hover:text-gray-800"
+          aria-label="Chiudi lettera"
+        >
           <components.CloseIcon className="w-8 h-8" />
         </button>
-        <div className="text-gray-700 space-y-4 font-handwriting">
-           <p className="text-2xl sm:text-3xl">My Dearest,</p>
-           <p className="text-xl sm:text-2xl leading-relaxed sm:leading-loose">
-               If you're reading this, it means you've found my little secret. I wanted to create something that felt like a warm hug on a cold day, a tangible representation of how much you mean to me. You are my sunshine, my favorite song, and the best part of my day. Thank you for being you. Thank you for choosing me. I love you more than words can say.
-           </p>
-           <p className="text-right mt-6 text-2xl sm:text-3xl">Forever and always,</p>
-           <p className="text-right text-2xl sm:text-3xl">Your BF</p>
+
+        <div className="space-y-4 font-handwriting">
+          <p className="text-2xl sm:text-3xl">Amore Mio,</p>
+          <p className="text-xl sm:text-2xl leading-relaxed sm:leading-loose">
+            Se stai leggendo questo, significa che hai scoperto il mio piccolo segreto.
+            Volevo creare qualcosa che sembrasse un caldo abbraccio in un giorno freddo,
+            una rappresentazione tangibile di quanto significhi per me.
+            Sei il mio raggio di sole, la mia canzone preferita e la parte migliore della mia giornata.
+            Grazie di esistere. Grazie per avermi scelto.
+            Ti amo più di quanto le parole possano dire.
+          </p>
+          <p className="text-right mt-6 text-2xl sm:text-3xl">Per sempre e oltre,</p>
+          <p className="text-right text-2xl sm:text-3xl">Il tuo Ragazzo</p>
         </div>
       </div>
     </div>
   );
 };
 
-// --- Componente Modale per il Biglietto ---
+
+
+
+// --- Componente Modale per il Biglietto (allineato a WelcomeModal) ---
 const TicketModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   const [topPosition, setTopPosition] = useState(0);
 
   useEffect(() => {
     if (isOpen) {
-      setTopPosition(window.scrollY + 190);
+      setTopPosition(window.scrollY + 140);
     }
   }, [isOpen]);
 
   if (!isOpen) return null;
+
   return (
     <div
-      className="fixed inset-0 bg-black/60 z-50 transition-opacity duration-300"
+      className="fixed inset-0 bg-black/70 z-[100] flex items-start justify-center transition-opacity duration-500 animate-fade-in cursor-pointer"
       onClick={onClose}
       aria-modal="true"
       role="dialog"
     >
       <div
-        className="absolute bg-[#fef6e4] rounded-2xl shadow-2xl w-[95%] max-w-sm animate-fade-in flex overflow-hidden max-h-[90vh] overflow-y-auto"
-        style={{
-          top: `${topPosition}px`,
-          left: '40%',
-          transform: 'translateX(-50%)',
-        }}
+        className="bg-[#fef6e4] rounded-2xl shadow-2xl w-[95%] max-w-sm animate-fade-in flex overflow-hidden max-h-[90vh] overflow-y-auto relative cursor-default"
+        style={{ marginTop: `${topPosition}px` }}
         onClick={(e) => e.stopPropagation()}
       >
+        {/* Parte sinistra */}
         <div className="w-1/3 bg-[#f5eadd] p-4 flex flex-col items-center justify-between border-r-2 border-dashed border-[#d3c0a9]">
-           <div className="text-center">
-              <p className="font-bold text-[#b59f84] text-xs transform -rotate-90 whitespace-nowrap origin-center mt-12">ADMIT ONE</p>
-           </div>
-           <div className="text-[#b59f84]">
-             <components.HeartIcon className="w-8 h-8"/>
-           </div>
-           <div className="text-center">
-              <p className="font-bold text-[#b59f84] text-xs transform -rotate-90 whitespace-nowrap origin-center mb-12">No. 1023</p>
-           </div>
+          <div className="text-center">
+            <p className="font-bold text-[#b59f84] text-xs transform -rotate-90 whitespace-nowrap origin-center mt-12">INGRESSO</p>
+          </div>
+          <div className="text-[#b59f84]">
+            <components.HeartIcon className="w-8 h-8" />
+          </div>
+          <div className="text-center">
+            <p className="font-bold text-[#b59f84] text-xs transform -rotate-90 whitespace-nowrap origin-center mb-12">No. 1023</p>
+          </div>
         </div>
+
+        {/* Parte destra */}
         <div className="w-2/3 p-6 text-gray-700 flex flex-col justify-between">
           <div>
-            <h3 className="font-handwriting text-3xl text-brand-pink-500">A Perfect Day</h3>
-            <p className="text-xs text-gray-500 mb-4">Official Invitation</p>
+            <h3 className="font-handwriting text-3xl text-brand-pink-500">Un Giorno Perfetto</h3>
+            <p className="text-xs text-gray-500 mb-4">Invito Ufficiale</p>
             <div className="space-y-2 text-sm">
-              <p><strong className="text-[#b59f84]">Date:</strong> Any Day You Choose</p>
-              <p><strong className="text-[#b59f84]">Time:</strong> Sunrise to Sunset</p>
-              <p><strong className="text-[#b59f84]">Venue:</strong> Wherever We're Together</p>
+              <p><strong className="text-[#b59f84]">Data:</strong> Qualsiasi Giorno Tu Scelga</p>
+              <p><strong className="text-[#b59f84]">Orario:</strong> Dall'Alba al Tramonto</p>
+              <p><strong className="text-[#b59f84]">Luogo:</strong> Ovunque Siamo Insieme</p>
             </div>
           </div>
           <div className="mt-4">
-             <p className="text-xs text-gray-600 leading-tight">Includes: cuddling, movie marathons, endless snacks, and non-stop laughter. </p>
-             <p className="text-xs text-[#b59f84] mt-2">Price: One (1) Hug</p>
+            <p className="text-xs text-gray-600 leading-tight">
+              Include: coccole, maratone di film, snack infiniti e risate non-stop.
+            </p>
+            <p className="text-xs text-[#b59f84] mt-2">Prezzo: Un (1) Abbraccio</p>
           </div>
         </div>
-        <button onClick={onClose} className="absolute top-2 right-2 text-gray-600/70 hover:text-gray-900" aria-label="Close ticket">
+
+        <button
+          onClick={onClose}
+          className="absolute top-2 right-2 text-gray-600/70 hover:text-gray-900"
+          aria-label="Chiudi biglietto"
+        >
           <components.CloseIcon className="w-6 h-6" />
         </button>
       </div>
@@ -120,60 +180,80 @@ const TicketModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   );
 };
 
+
+
 // --- Componente Modale per la Foto ---
 const PhotoModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
+    // Stato per gestire l'effetto "flip" della foto.
     const [isFlipped, setIsFlipped] = useState(false);
+    // Stato per il posizionamento verticale.
     const [topPosition, setTopPosition] = useState(0);
 
+    // useEffect per gestire l'apertura e la chiusura.
     useEffect(() => {
+        // Quando il modale si apre, calcola la posizione.
         if (isOpen) {
             setTopPosition(window.scrollY + 130);
         } else {
-            const timer = setTimeout(() => setIsFlipped(false), 300); // Reset after closing animation
-            return () => clearTimeout(timer);
+            // Quando si chiude, aspetta 300ms (la durata dell'animazione di chiusura)
+            // e poi resetta lo stato `isFlipped` a false, così la prossima volta
+            // che si apre, la foto sarà mostrata dal lato giusto.
+            const timer = setTimeout(() => setIsFlipped(false), 300); 
+            return () => clearTimeout(timer); // Pulisce il timer se il componente viene smontato.
         }
     }, [isOpen]);
 
     if (!isOpen) return null;
 
+    // Funzione di chiusura separata per evitare che la propagazione dell'evento
+    // attivi anche l'handler `onClick` dell'overlay.
     const handleClose = (e: React.MouseEvent) => {
         e.stopPropagation();
         onClose();
     };
 
     return (
+        // Contenitore overlay.
         <div
             className="fixed inset-0 bg-black/70 z-50 transition-opacity duration-300 animate-fade-in"
             onClick={onClose}
             aria-modal="true"
             role="dialog"
         >
+            {/* Contenitore per la foto, gestisce la prospettiva per l'effetto 3D. */}
             <div
                 className="absolute w-[95%] max-w-sm sm:max-w-md lg:max-w-lg cursor-pointer group outline-none"
                 style={{
                   top: `${topPosition}px`,
                   left: '50%',
                   transform: 'translateX(-50%)',
-                  perspective: '1200px'
+                  perspective: '1200px' // Aggiunge prospettiva per l'effetto 3D.
                 }}
+                // Cliccando sulla foto, inverte lo stato `isFlipped`.
                 onClick={(e) => {
                     e.stopPropagation();
                     setIsFlipped(!isFlipped);
                 }}
             >
+                {/* Contenitore interno che ruota. */}
+                {/* - `transformStyle: 'preserve-3d'`: Necessario per la rotazione 3D dei figli. */}
+                {/* - `transform`: Applica la rotazione sull'asse Y in base allo stato `isFlipped`. */}
                 <div
                     className="relative w-full transition-transform duration-700 ease-in-out"
                     style={{ transformStyle: 'preserve-3d', transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)', aspectRatio: '4/5' }}
                 >
-                    {/* Fronte: Foto */}
+                    {/* Fronte della carta: la foto. */}
+                    {/* - `backfaceVisibility: 'hidden'`: Nasconde questo lato quando è girato. */}
                     <div className="absolute w-full h-full" style={{ backfaceVisibility: 'hidden' }}>
-                        <img src="https://i.imgur.com/AOQzuBM.jpeg" alt="Zoomed in photo of two penguins" className="w-full h-full object-cover rounded-xl shadow-2xl" />
+                        <img src="https://i.imgur.com/AOQzuBM.jpeg" alt="Foto ravvicinata di due pinguini" className="w-full h-full object-cover rounded-xl shadow-2xl" />
+                         {/* Overlay che appare al passaggio del mouse per suggerire l'interazione. */}
                          <div className="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl">
-                            <p className="text-white font-bold text-lg">Click to flip</p>
+                            <p className="text-white font-bold text-lg">Clicca per girare</p>
                         </div>
                     </div>
 
-                    {/* Retro: Messaggio */}
+                    {/* Retro della carta: il messaggio. */}
+                    {/* - `transform: 'rotateY(180deg)'`: Ruota questo lato di 180 gradi all'inizio. */}
                     <div className="absolute w-full h-full bg-[#fef6e4] p-8 sm:p-12 rounded-xl shadow-2xl flex items-center justify-center" style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}>
                         <div className="text-center text-gray-700 font-handwriting">
                             <p className="text-2xl sm:text-4xl leading-relaxed">
@@ -183,7 +263,8 @@ const PhotoModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                         </div>
                     </div>
                 </div>
-                 <button onClick={handleClose} className="absolute top-[-35px] right-[-15px] text-white/70 hover:text-white z-10" aria-label="Close photo view">
+                {/* Pulsante di chiusura posizionato sopra e a destra della foto. */}
+                 <button onClick={handleClose} className="absolute top-[-35px] right-[-15px] text-white/70 hover:text-white z-10" aria-label="Chiudi foto">
                     <components.CloseIcon className="w-8 h-8" />
                 </button>
             </div>
@@ -291,18 +372,18 @@ const MusicPlayer = () => {
                                         }
                                         resolve({
                                             src,
-                                            title: title || src.split('/').pop()?.replace('.mp3', '') || 'Unknown Title',
-                                            artist: artist || 'Unknown Artist',
+                                            title: title || src.split('/').pop()?.replace('.mp3', '') || 'Titolo Sconosciuto',
+                                            artist: artist || 'Artista Sconosciuto',
                                             cover
                                         });
                                     } catch (e) {
                                         console.error(`Errore nell'elaborazione dei tag per ${src}:`, e);
-                                        resolve({ src, title: src.split('/').pop()?.replace('.mp3', '') || 'Unknown Title', artist: 'Unknown Artist', cover: null });
+                                        resolve({ src, title: src.split('/').pop()?.replace('.mp3', '') || 'Titolo Sconosciuto', artist: 'Artista Sconosciuto', cover: null });
                                     }
                                 },
                                 onError: (error: any) => {
                                     console.warn(`jsmediatags non è riuscito a leggere ${src}:`, error);
-                                    resolve({ src, title: src.split('/').pop()?.replace('.mp3', '') || 'Unknown Title', artist: 'Unknown Artist', cover: null });
+                                    resolve({ src, title: src.split('/').pop()?.replace('.mp3', '') || 'Titolo Sconosciuto', artist: 'Artista Sconosciuto', cover: null });
                                 }
                             });
                         });
@@ -310,8 +391,8 @@ const MusicPlayer = () => {
                         console.error(`Impossibile caricare il file audio da ${src}:`, fetchError);
                         return {
                             src,
-                            title: src.split('/').pop()?.replace('.mp3', '') || 'Unknown Title',
-                            artist: 'Unknown Artist',
+                            title: src.split('/').pop()?.replace('.mp3', '') || 'Titolo Sconosciuto',
+                            artist: 'Artista Sconosciuto',
                             cover: null
                         };
                     }
@@ -420,7 +501,7 @@ const MusicPlayer = () => {
             <div className="flex items-center gap-4">
                 <div className="w-20 h-20 bg-brand-pink-100 rounded-md shadow-inner flex-shrink-0 flex items-center justify-center">
                     {currentTrack && currentTrack.cover ? (
-                        <img src={currentTrack.cover} alt="Album cover" className="w-full h-full object-cover rounded-md" />
+                        <img src={currentTrack.cover} alt="Copertina album" className="w-full h-full object-cover rounded-md" />
                     ) : (
                         <components.MusicNoteIcon className="w-10 h-10 text-brand-pink-300" />
                     )}
@@ -440,7 +521,7 @@ const MusicPlayer = () => {
                     onChange={handleSeek}
                     className="w-full h-1 bg-brand-pink-200 rounded-lg appearance-none cursor-pointer"
                     disabled={!currentTrack || isLoading}
-                    aria-label="Seek slider"
+                    aria-label="Barra di avanzamento"
                 />
                  <div className="flex justify-between text-xs text-gray-500 mt-1">
                     <span>{formatTime(currentTime)}</span>
@@ -449,15 +530,15 @@ const MusicPlayer = () => {
             </div>
 
             <div className="flex justify-center items-center gap-6 text-brand-pink-500">
-                <button onClick={playPrev} disabled={playlist.length < 2} className="disabled:opacity-50 transition-transform active:scale-90" aria-label="Previous song"><components.MusicPrevIcon className="w-6 h-6" /></button>
-                <button onClick={togglePlayPause} disabled={!currentTrack || isLoading} className="w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center disabled:opacity-50 hover:scale-110 transition-transform active:scale-95" aria-label={isPlaying ? "Pause" : "Play"}>
+                <button onClick={playPrev} disabled={playlist.length < 2} className="disabled:opacity-50 transition-transform active:scale-90" aria-label="Canzone precedente"><components.MusicPrevIcon className="w-6 h-6" /></button>
+                <button onClick={togglePlayPause} disabled={!currentTrack || isLoading} className="w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center disabled:opacity-50 hover:scale-110 transition-transform active:scale-95" aria-label={isPlaying ? "Pausa" : "Riproduci"}>
                     {isPlaying ? <components.MusicPauseIcon className="w-6 h-6" /> : <components.MusicPlayIcon className="w-6 h-6" />}
                 </button>
-                <button onClick={playNext} disabled={playlist.length < 2} className="disabled:opacity-50 transition-transform active:scale-90" aria-label="Next song"><components.MusicNextIcon className="w-6 h-6" /></button>
+                <button onClick={playNext} disabled={playlist.length < 2} className="disabled:opacity-50 transition-transform active:scale-90" aria-label="Canzone successiva"><components.MusicNextIcon className="w-6 h-6" /></button>
             </div>
             
             <div className="flex items-center gap-3 px-2">
-                <button onClick={toggleMute} className="text-brand-pink-400 hover:text-brand-pink-600 transition-colors" aria-label={isMuted ? "Unmute" : "Mute"}>
+                <button onClick={toggleMute} className="text-brand-pink-400 hover:text-brand-pink-600 transition-colors" aria-label={isMuted ? "Riattiva audio" : "Muto"}>
                     {isMuted || volume === 0 ? <components.VolumeMuteIcon className="w-5 h-5" /> : <components.VolumeHighIcon className="w-5 h-5" />}
                 </button>
                 <input
@@ -468,7 +549,7 @@ const MusicPlayer = () => {
                     value={isMuted ? 0 : volume}
                     onChange={handleVolumeChange}
                     className="w-full h-1 bg-brand-pink-200 rounded-lg appearance-none cursor-pointer"
-                    aria-label="Volume slider"
+                    aria-label="Cursore volume"
                 />
             </div>
             
@@ -502,6 +583,7 @@ const MusicPlayer = () => {
 // --- Componente Principale dell'Applicazione ---
 const App: React.FC = () => {
   const [isUnlocked, setIsUnlocked] = useState(false);
+  const [isWelcomeModalOpen, setIsWelcomeModalOpen] = useState(false);
   const [isLetterOpen, setIsLetterOpen] = useState(false);
   const [isTicketOpen, setIsTicketOpen] = useState(false);
   const [isPhotoModalOpen, setIsPhotoModalOpen] = useState(false);
@@ -510,6 +592,7 @@ const App: React.FC = () => {
 
   const handleUnlock = () => {
     setIsUnlocked(true);
+    setIsWelcomeModalOpen(true);
   };
   
   const openLetter = () => setIsLetterOpen(true);
@@ -546,20 +629,20 @@ const App: React.FC = () => {
         </div>
 
         <div className="relative w-72 sm:w-80 bg-white p-4 rounded-lg shadow-lg rotate-[-2deg] z-10 md:absolute md:top-[5%] md:left-1/2 md:-translate-x-1/2">
-          <h2 className="font-bold text-center text-brand-pink-500">♡ NOTICE ♡</h2>
-          <p className="text-sm mt-2"><b>To:</b> the most beautiful GF</p>
-          <p className="text-sm"><b>From:</b> your loving BF</p>
+          <h2 className="font-bold text-center text-brand-pink-500">♡ AVVISO ♡</h2>
+          <p className="text-sm mt-2"><b>A:</b> la fidanzata più bella</p>
+          <p className="text-sm"><b>Da:</b> il tuo amorevole fidanzato</p>
         </div>
 
         <a href="#section-start" className="relative bg-gray-100 px-6 py-2 rounded-full shadow-md hover:shadow-lg transition-transform hover:scale-105 z-10 text-sm outline-none focus:outline-none md:absolute md:top-[20%] md:left-1/2 md:-translate-x-1/2">
-          01 — Start here!
+          01 — Inizia qui!
         </a>
 
         <div className="relative md:static">
             <button
                 onClick={openPhotoModal}
                 className="relative w-[240px] h-[300px] sm:w-[320px] sm:h-[400px] lg:w-[380px] lg:h-[475px] bg-white p-3 rounded-lg shadow-2xl rotate-2 transform hover:scale-105 transition-transform duration-300 z-20 cursor-pointer outline-none focus:outline-none md:absolute md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2"
-                aria-label="View photo and secret message"
+                aria-label="Guarda la foto e il messaggio segreto"
             >
                 <img src="https://i.imgur.com/AOQzuBM.jpeg" alt="Foto di due pinguini che si guardano in Antartide" className="w-full h-full object-cover rounded-md"/>
                 <div className="absolute -top-4 -left-4 text-brand-pink-300 z-30">
@@ -572,17 +655,13 @@ const App: React.FC = () => {
             <button
               onClick={handlePaintClick}
               className="absolute -top-4 -right-2 w-14 h-14 rotate-[25deg] sm:w-20 sm:h-20 z-30 transform transition-all duration-300 hover:scale-110 hover:rotate-[15deg] group cursor-pointer outline-none focus:outline-none md:absolute md:top-[20%] md:left-[10%] lg:left-[8%] md:w-24 md:h-24 md:rotate-[15deg]"
-              aria-label="Draw a heart"
+              aria-label="Disegna un cuore"
               disabled={isPainting}
             >
               <components.PaintBrushIcon className="w-full h-full drop-shadow-lg" />
             </button>
         </div>
         
-        <button onClick={openLetter} className="relative bg-white px-4 py-2 rounded-md shadow-md hover:shadow-lg transition-transform hover:scale-105 z-30 text-sm flex items-center gap-2 cursor-pointer outline-none focus:outline-none md:absolute md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:transform md:translate-y-[170px] sm:md:translate-y-[230px] lg:md:translate-y-[270px]">
-            <components.BookIcon className="w-4 h-4" /> Read me ♡
-        </button>
-
         <div className="relative w-16 h-16 rotate-[-25deg] z-20 md:absolute md:top-[12%] md:left-[15%] lg:md:left-[24%] xl:md:left-[28%]">
           <components.BinderClipIcon className="text-pink-300 drop-shadow-md"/>
         </div>
@@ -595,12 +674,12 @@ const App: React.FC = () => {
         
          <button onClick={openTicket} className="relative w-36 rotate-[8deg] bg-[#f5eadd] p-3 rounded-lg shadow-md z-10 transform hover:rotate-6 transition-transform outline-none focus:outline-none md:absolute md:top-[65%] md:left-[8%] lg:md:left-[2%] xl:md:left-[5%]">
             <div className="border-2 border-dashed border-[#d3c0a9] p-2 text-center">
-                <p className="font-bold text-[#b59f84] text-xs">TICKET TO</p>
-                <p className="text-2xl font-handwriting text-[#b59f84]">Happiness</p>
+                <p className="font-bold text-[#b59f84] text-xs">BIGLIETTO PER</p>
+                <p className="text-2xl font-handwriting text-[#b59f84]">La Felicità</p>
             </div>
         </button>
         
-        <button onClick={openLetter} className="relative w-28 h-28 rotate-[-10deg] sm:w-32 sm:h-32 transform hover:scale-110 transition-transform z-10 cursor-pointer outline-none focus:outline-none rounded-lg md:absolute md:bottom-[10%] md:left-[8%] lg:md:left-[2%] xl:md:left-[5%]" aria-label="Open letter">
+        <button onClick={openLetter} className="relative w-28 h-28 rotate-[-10deg] sm:w-32 sm:h-32 transform hover:scale-110 transition-transform z-10 cursor-pointer outline-none focus:outline-none rounded-lg md:absolute md:bottom-[10%] md:left-[8%] lg:md:left-[2%] xl:md:left-[5%]" aria-label="Apri lettera">
             <components.EnvelopeIcon />
         </button>
 
@@ -610,7 +689,7 @@ const App: React.FC = () => {
 
         <div className="relative w-44 rotate-6 sm:w-56 bg-[#fef6e4] p-4 rounded-lg shadow-lg transform transition-transform hover:rotate-3 z-10 md:absolute md:top-[32%] md:right-[5%] lg:md:right-[2%] xl:md:right-[5%]">
             <p className="font-handwriting text-xl sm:text-2xl leading-tight text-gray-600">
-                Lights will guide you home, and ignite your bones, and I will try to fix you.
+                Le luci ti guideranno a casa, scalderanno le tue ossa, e io cercherò di aggiustarti.
             </p>
              <div className="flex justify-end mt-2 text-brand-pink-300">
                 <components.StarIcon className="w-4 h-4"/>
@@ -624,7 +703,7 @@ const App: React.FC = () => {
         </div>
 
         <a href="#section-love" className="relative bg-gray-100 px-6 py-2 rounded-full shadow-md hover:shadow-lg transition-transform hover:scale-105 z-10 text-sm outline-none focus:outline-none md:absolute md:bottom-0 md:left-1/2 md:-translate-x-1/2">
-          02 — Things I love about you ♡
+          02 — Cose che amo di te ♡
         </a>
         
         <div className="hidden md:block absolute bottom-[-2%] right-[-10%] sm:right-0 md:right-[-5%] lg:right-[-2%] w-32 h-auto sm:w-40 opacity-70 z-0">
@@ -641,37 +720,38 @@ const App: React.FC = () => {
 
       <div className="space-y-24 px-4 sm:px-8 pb-24">
         <section id="section-start" className="max-w-3xl lg:max-w-4xl mx-auto pt-20 text-center">
-            <h2 className="text-3xl sm:text-4xl font-handwriting text-brand-pink-500 mb-4">Our Story Begins...</h2>
+            <h2 className="text-3xl sm:text-4xl font-handwriting text-brand-pink-500 mb-4">La Nostra Storia Inizia...</h2>
             <p className="text-base sm:text-lg leading-relaxed">
-                This is a little corner of the internet I made just for you. A place to hold our memories, our dreams, and all the little things that make us, 'us'. Every piece here is a reminder of a moment, a feeling, a song that reminds me of you. Click around and explore our world.
+                Questo è un piccolo angolo di internet che ho creato solo per te. Un posto dove conservare i nostri ricordi, i nostri sogni e tutte le piccole cose che ci rendono 'noi'. Ogni pezzo qui è un ricordo di un momento, una sensazione, una canzone che mi ricorda te. Clicca in giro ed esplora il nostro mondo.
             </p>
         </section>
 
         <section id="section-love" className="max-w-3xl lg:max-w-4xl mx-auto pt-20">
-            <h2 className="text-3xl sm:text-4xl font-handwriting text-brand-pink-500 mb-6 text-center">Things I Love About You...</h2>
+            <h2 className="text-3xl sm:text-4xl font-handwriting text-brand-pink-500 mb-6 text-center">Cose Che Amo Di Te...</h2>
             <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 text-base sm:text-lg">
                 <li className="bg-white/50 p-4 rounded-lg shadow-md flex items-center gap-3">
-                    <span className="text-brand-pink-400">♡</span> Your laugh when you think something is really funny.
+                    <span className="text-brand-pink-400">♡</span> La tua risata quando pensi che qualcosa sia davvero divertente.
                 </li>
                 <li className="bg-white/50 p-4 rounded-lg shadow-md flex items-center gap-3">
-                    <span className="text-brand-pink-400">♡</span> The way you get excited about little things.
+                    <span className="text-brand-pink-400">♡</span> Il modo in cui ti entusiasmi per le piccole cose.
                 </li>
                 <li className="bg-white/50 p-4 rounded-lg shadow-md flex items-center gap-3">
-                    <span className="text-brand-pink-400">♡</span> How you always know how to make me feel better.
+                    <span className="text-brand-pink-400">♡</span> Come sai sempre come farmi sentire meglio.
                 </li>
                 <li className="bg-white/50 p-4 rounded-lg shadow-md flex items-center gap-3">
-                    <span className="text-brand-pink-400">♡</span> Your kindness to everyone you meet.
+                    <span className="text-brand-pink-400">♡</span> La tua gentilezza con tutti quelli che incontri.
                 </li>
                 <li className="bg-white/50 p-4 rounded-lg shadow-md flex items-center gap-3">
-                    <span className="text-brand-pink-400">♡</span> That you're the smartest person I know.
+                    <span className="text-brand-pink-400">♡</span> Il fatto che tu sia la persona più intelligente che conosco.
                 </li>
                 <li className="bg-white/50 p-4 rounded-lg shadow-md flex items-center gap-3">
-                    <span className="text-brand-pink-400">♡</span> ...and the list goes on forever.
+                    <span className="text-brand-pink-400">♡</span> ...e la lista continua all'infinito.
                 </li>
             </ul>
         </section>
       </div>
       
+      <WelcomeModal isOpen={isWelcomeModalOpen} onClose={() => setIsWelcomeModalOpen(false)} />
       <LetterModal isOpen={isLetterOpen} onClose={closeLetter} />
       <TicketModal isOpen={isTicketOpen} onClose={closeTicket} />
       <PhotoModal isOpen={isPhotoModalOpen} onClose={closePhotoModal} />
