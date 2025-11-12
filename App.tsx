@@ -22,7 +22,7 @@ const LetterModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
 
   useEffect(() => {
     if (isOpen) {
-      setTopPosition(window.scrollY + 40);
+      setTopPosition(window.scrollY + 190);
     }
   }, [isOpen]);
 
@@ -38,8 +38,8 @@ const LetterModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
         className="absolute bg-[#fef6e4] p-8 sm:p-12 rounded-lg shadow-2xl w-[95%] max-w-2xl animate-fade-in max-h-[90vh] overflow-y-auto"
         style={{
           top: `${topPosition}px`,
-          left: '50%',
-          transform: 'translateX(-50%)',
+          left: '30%',
+          transform: 'translateX(-0%)',
         }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -65,7 +65,7 @@ const TicketModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
 
   useEffect(() => {
     if (isOpen) {
-      setTopPosition(window.scrollY + 40);
+      setTopPosition(window.scrollY + 190);
     }
   }, [isOpen]);
 
@@ -81,7 +81,7 @@ const TicketModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
         className="absolute bg-[#fef6e4] rounded-2xl shadow-2xl w-[95%] max-w-sm animate-fade-in flex overflow-hidden max-h-[90vh] overflow-y-auto"
         style={{
           top: `${topPosition}px`,
-          left: '50%',
+          left: '40%',
           transform: 'translateX(-50%)',
         }}
         onClick={(e) => e.stopPropagation()}
@@ -127,7 +127,7 @@ const PhotoModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
 
     useEffect(() => {
         if (isOpen) {
-            setTopPosition(window.scrollY + 40);
+            setTopPosition(window.scrollY + 130);
         } else {
             const timer = setTimeout(() => setIsFlipped(false), 300); // Reset after closing animation
             return () => clearTimeout(timer);
