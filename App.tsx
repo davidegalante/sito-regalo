@@ -18,16 +18,29 @@ declare global {
 
 // --- Componente Modale per la Lettera ---
 const LetterModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
+  const [topPosition, setTopPosition] = useState(0);
+
+  useEffect(() => {
+    if (isOpen) {
+      setTopPosition(window.scrollY + 40);
+    }
+  }, [isOpen]);
+
   if (!isOpen) return null;
   return (
-    <div 
-      className="fixed inset-0 bg-black/60 z-50 flex items-start justify-center p-4 pt-28 sm:pt-40 transition-opacity duration-300"
+    <div
+      className="fixed inset-0 bg-black/60 z-50 transition-opacity duration-300"
       onClick={onClose}
       aria-modal="true"
       role="dialog"
     >
-      <div 
-        className="bg-[#fef6e4] p-8 sm:p-12 rounded-lg shadow-2xl max-w-2xl w-full relative transform animate-fade-in max-h-[90vh] overflow-y-auto"
+      <div
+        className="absolute bg-[#fef6e4] p-8 sm:p-12 rounded-lg shadow-2xl w-[95%] max-w-2xl animate-fade-in max-h-[90vh] overflow-y-auto"
+        style={{
+          top: `${topPosition}px`,
+          left: '50%',
+          transform: 'translateX(-50%)',
+        }}
         onClick={(e) => e.stopPropagation()}
       >
         <button onClick={onClose} className="absolute top-4 right-4 text-gray-500 hover:text-gray-800" aria-label="Close letter">
@@ -48,16 +61,29 @@ const LetterModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
 
 // --- Componente Modale per il Biglietto ---
 const TicketModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
+  const [topPosition, setTopPosition] = useState(0);
+
+  useEffect(() => {
+    if (isOpen) {
+      setTopPosition(window.scrollY + 40);
+    }
+  }, [isOpen]);
+
   if (!isOpen) return null;
   return (
-    <div 
-      className="fixed inset-0 bg-black/60 z-50 flex items-start justify-center p-4 pt-28 sm:pt-40 transition-opacity duration-300"
+    <div
+      className="fixed inset-0 bg-black/60 z-50 transition-opacity duration-300"
       onClick={onClose}
       aria-modal="true"
       role="dialog"
     >
-      <div 
-        className="bg-[#fef6e4] rounded-2xl shadow-2xl w-full max-w-sm transform animate-fade-in flex overflow-hidden max-h-[90vh] overflow-y-auto"
+      <div
+        className="absolute bg-[#fef6e4] rounded-2xl shadow-2xl w-[95%] max-w-sm animate-fade-in flex overflow-hidden max-h-[90vh] overflow-y-auto"
+        style={{
+          top: `${topPosition}px`,
+          left: '50%',
+          transform: 'translateX(-50%)',
+        }}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="w-1/3 bg-[#f5eadd] p-4 flex flex-col items-center justify-between border-r-2 border-dashed border-[#d3c0a9]">
@@ -86,10 +112,10 @@ const TicketModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
              <p className="text-xs text-[#b59f84] mt-2">Price: One (1) Hug</p>
           </div>
         </div>
-      </div>
-        <button onClick={onClose} className="absolute top-4 right-4 text-white/70 hover:text-white" aria-label="Close ticket">
-          <components.CloseIcon className="w-8 h-8" />
+        <button onClick={onClose} className="absolute top-2 right-2 text-gray-600/70 hover:text-gray-900" aria-label="Close ticket">
+          <components.CloseIcon className="w-6 h-6" />
         </button>
+      </div>
     </div>
   );
 };
@@ -97,9 +123,12 @@ const TicketModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
 // --- Componente Modale per la Foto ---
 const PhotoModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
     const [isFlipped, setIsFlipped] = useState(false);
+    const [topPosition, setTopPosition] = useState(0);
 
     useEffect(() => {
-        if (!isOpen) {
+        if (isOpen) {
+            setTopPosition(window.scrollY + 40);
+        } else {
             const timer = setTimeout(() => setIsFlipped(false), 300); // Reset after closing animation
             return () => clearTimeout(timer);
         }
@@ -107,16 +136,26 @@ const PhotoModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
 
     if (!isOpen) return null;
 
+    const handleClose = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        onClose();
+    };
+
     return (
         <div
-            className="fixed inset-0 bg-black/70 z-50 flex items-start justify-center p-4 pt-28 sm:pt-40 transition-opacity duration-300 animate-fade-in"
+            className="fixed inset-0 bg-black/70 z-50 transition-opacity duration-300 animate-fade-in"
             onClick={onClose}
             aria-modal="true"
             role="dialog"
         >
             <div
-                className="relative w-full max-w-sm sm:max-w-md lg:max-w-lg cursor-pointer group outline-none"
-                style={{ perspective: '1200px' }}
+                className="absolute w-[95%] max-w-sm sm:max-w-md lg:max-w-lg cursor-pointer group outline-none"
+                style={{
+                  top: `${topPosition}px`,
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  perspective: '1200px'
+                }}
                 onClick={(e) => {
                     e.stopPropagation();
                     setIsFlipped(!isFlipped);
@@ -144,10 +183,10 @@ const PhotoModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                         </div>
                     </div>
                 </div>
+                 <button onClick={handleClose} className="absolute top-[-35px] right-[-15px] text-white/70 hover:text-white z-10" aria-label="Close photo view">
+                    <components.CloseIcon className="w-8 h-8" />
+                </button>
             </div>
-            <button onClick={onClose} className="absolute top-4 right-4 text-white/70 hover:text-white" aria-label="Close photo view">
-              <components.CloseIcon className="w-8 h-8" />
-            </button>
         </div>
     );
 };
@@ -203,7 +242,7 @@ const MusicPlayer = () => {
     const [isPlaying, setIsPlaying] = useState(false);
     const [currentTime, setCurrentTime] = useState(0);
     const [duration, setDuration] = useState(0);
-    const [volume, setVolume] = useState(0.75);
+    const [volume, setVolume] = useState(0.4);
     const [isMuted, setIsMuted] = useState(false);
 
     const audioRef = useRef<HTMLAudioElement>(null);
@@ -494,81 +533,82 @@ const App: React.FC = () => {
     <div className="bg-brand-pink-50 min-h-screen text-gray-700 animate-fade-in">
       {isPainting && paintPosition && <HeartPainter position={paintPosition} onComplete={() => { setIsPainting(false); setPaintPosition(null); }} />}
       
-      <main className="relative max-w-5xl lg:max-w-7xl mx-auto p-4 sm:p-8 md:p-12 h-[200vh] sm:h-[150vh] md:h-screen">
+      <main className="relative max-w-5xl lg:max-w-7xl mx-auto p-4 sm:p-8 md:p-12 min-h-screen md:h-screen flex flex-col items-center gap-8 md:gap-0 md:block">
         
-        <div className="absolute top-[5%] left-[5%] lg:left-[2%] text-brand-pink-200 opacity-60">
+        <div className="hidden md:block absolute top-[5%] left-[5%] lg:left-[2%] text-brand-pink-200 opacity-60">
             <components.HeartIcon className="w-10 h-10 sm:w-12 sm:h-12 rotate-[-15deg]"/>
         </div>
-        <div className="absolute top-[20%] right-[10%] lg:right-[5%] text-brand-pink-200 opacity-60">
+        <div className="hidden md:block absolute top-[20%] right-[10%] lg:right-[5%] text-brand-pink-200 opacity-60">
             <components.StarIcon className="w-6 h-6 sm:w-8 sm:h-8"/>
         </div>
-        <div className="absolute bottom-[25%] left-[15%] lg:bottom-[10%] lg:left-[10%] text-brand-pink-200 opacity-60">
+        <div className="hidden md:block absolute bottom-[25%] left-[15%] lg:bottom-[10%] lg:left-[10%] text-brand-pink-200 opacity-60">
             <components.SparkleIcon className="w-8 h-8 sm:w-10 sm:h-10 rotate-12"/>
         </div>
 
-        <div className="absolute top-[2%] sm:top-[5%] left-1/2 -translate-x-1/2 w-72 sm:w-80 bg-white p-4 rounded-lg shadow-lg rotate-[-2deg] z-10">
+        <div className="relative w-72 sm:w-80 bg-white p-4 rounded-lg shadow-lg rotate-[-2deg] z-10 md:absolute md:top-[5%] md:left-1/2 md:-translate-x-1/2">
           <h2 className="font-bold text-center text-brand-pink-500">♡ NOTICE ♡</h2>
           <p className="text-sm mt-2"><b>To:</b> the most beautiful GF</p>
           <p className="text-sm"><b>From:</b> your loving BF</p>
         </div>
 
-        <a href="#section-start" className="absolute top-[15%] sm:top-[20%] left-1/2 -translate-x-1/2 bg-gray-100 px-6 py-2 rounded-full shadow-md hover:shadow-lg transition-transform hover:scale-105 z-10 text-sm outline-none focus:outline-none">
+        <a href="#section-start" className="relative bg-gray-100 px-6 py-2 rounded-full shadow-md hover:shadow-lg transition-transform hover:scale-105 z-10 text-sm outline-none focus:outline-none md:absolute md:top-[20%] md:left-1/2 md:-translate-x-1/2">
           01 — Start here!
         </a>
 
-        <button
-            onClick={openPhotoModal}
-            className="absolute top-[48%] md:top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[240px] h-[300px] sm:w-[320px] sm:h-[400px] lg:w-[380px] lg:h-[475px] bg-white p-3 rounded-lg shadow-2xl rotate-2 transform hover:scale-105 transition-transform duration-300 z-20 cursor-pointer outline-none focus:outline-none"
-            aria-label="View photo and secret message"
-        >
-            <img src="https://i.imgur.com/AOQzuBM.jpeg" alt="Foto di due pinguini che si guardano in Antartide" className="w-full h-full object-cover rounded-md"/>
-            <div className="absolute -top-4 -left-4 text-brand-pink-300 z-30">
-                <components.HeartIcon className="w-8 h-8"/>
-            </div>
-            <div className="absolute -bottom-3 -right-3 text-brand-pink-300 z-30">
-                <components.HeartIcon className="w-10 h-10 rotate-12"/>
-            </div>
+        <div className="relative md:static">
+            <button
+                onClick={openPhotoModal}
+                className="relative w-[240px] h-[300px] sm:w-[320px] sm:h-[400px] lg:w-[380px] lg:h-[475px] bg-white p-3 rounded-lg shadow-2xl rotate-2 transform hover:scale-105 transition-transform duration-300 z-20 cursor-pointer outline-none focus:outline-none md:absolute md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2"
+                aria-label="View photo and secret message"
+            >
+                <img src="https://i.imgur.com/AOQzuBM.jpeg" alt="Foto di due pinguini che si guardano in Antartide" className="w-full h-full object-cover rounded-md"/>
+                <div className="absolute -top-4 -left-4 text-brand-pink-300 z-30">
+                    <components.HeartIcon className="w-8 h-8"/>
+                </div>
+                <div className="absolute -bottom-3 -right-3 text-brand-pink-300 z-30">
+                    <components.HeartIcon className="w-10 h-10 rotate-12"/>
+                </div>
+            </button>
+            <button
+              onClick={handlePaintClick}
+              className="absolute -top-4 -right-2 w-14 h-14 rotate-[25deg] sm:w-20 sm:h-20 z-30 transform transition-all duration-300 hover:scale-110 hover:rotate-[15deg] group cursor-pointer outline-none focus:outline-none md:absolute md:top-[20%] md:left-[10%] lg:left-[8%] md:w-24 md:h-24 md:rotate-[15deg]"
+              aria-label="Draw a heart"
+              disabled={isPainting}
+            >
+              <components.PaintBrushIcon className="w-full h-full drop-shadow-lg" />
+            </button>
+        </div>
+        
+        <button onClick={openLetter} className="relative bg-white px-4 py-2 rounded-md shadow-md hover:shadow-lg transition-transform hover:scale-105 z-30 text-sm flex items-center gap-2 cursor-pointer outline-none focus:outline-none md:absolute md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:transform md:translate-y-[170px] sm:md:translate-y-[230px] lg:md:translate-y-[270px]">
+            <components.BookIcon className="w-4 h-4" /> Read me ♡
         </button>
 
-        <div className="absolute top-[38%] left-[calc(50%-130px)] sm:top-[12%] sm:left-[15%] md:left-[20%] lg:left-[24%] xl:left-[28%] w-16 h-16 rotate-[-25deg] z-20">
+        <div className="relative w-16 h-16 rotate-[-25deg] z-20 md:absolute md:top-[12%] md:left-[15%] lg:md:left-[24%] xl:md:left-[28%]">
           <components.BinderClipIcon className="text-pink-300 drop-shadow-md"/>
         </div>
 
-        <div className="absolute top-[25%] left-[5%] w-44 rotate-[-8deg] sm:w-56 sm:top-[38%] sm:left-[5%] md:left-[8%] lg:left-[2%] xl:left-[5%] bg-transparent p-2 z-10">
+        <div className="relative w-44 rotate-[-8deg] sm:w-56 bg-transparent p-2 z-10 md:absolute md:top-[38%] md:left-[5%] lg:md:left-[2%] xl:md:left-[5%]">
           <p className="leading-relaxed font-handwriting text-xl sm:text-2xl">
             <span className="bg-brand-pink-200 px-1">"I will always come looking for you, Angel, and I would burn the whole world down to find you."</span>
           </p>
         </div>
-
-        <button
-          onClick={handlePaintClick}
-          className="absolute top-[22%] left-[10%] w-16 h-16 rotate-[15deg] sm:w-24 sm:h-24 sm:top-[20%] sm:left-[10%] md:left-[12%] lg:left-[8%] z-20 transform transition-all duration-300 hover:scale-110 hover:rotate-[5deg] outline-none focus:outline-none group cursor-pointer"
-          aria-label="Draw a heart"
-          disabled={isPainting}
-        >
-          <components.PaintBrushIcon className="w-full h-full drop-shadow-lg" />
-        </button>
-
-         <button onClick={openTicket} className="absolute top-[75%] left-[5%] w-36 rotate-[8deg] sm:top-[75%] sm:left-[5%] md:top-[60%] md:left-[8%] lg:left-[2%] xl:left-[5%] bg-[#f5eadd] p-3 rounded-lg shadow-md z-10 transform hover:rotate-6 transition-transform outline-none focus:outline-none">
+        
+         <button onClick={openTicket} className="relative w-36 rotate-[8deg] bg-[#f5eadd] p-3 rounded-lg shadow-md z-10 transform hover:rotate-6 transition-transform outline-none focus:outline-none md:absolute md:top-[65%] md:left-[8%] lg:md:left-[2%] xl:md:left-[5%]">
             <div className="border-2 border-dashed border-[#d3c0a9] p-2 text-center">
                 <p className="font-bold text-[#b59f84] text-xs">TICKET TO</p>
                 <p className="text-2xl font-handwriting text-[#b59f84]">Happiness</p>
             </div>
         </button>
         
-        <button onClick={openLetter} className="absolute top-[88%] left-[10%] w-28 h-28 rotate-[-10deg] sm:w-32 sm:h-32 sm:top-auto sm:bottom-[12%] sm:left-[5%] md:bottom-[10%] md:left-[8%] lg:left-[2%] xl:left-[5%] transform hover:scale-110 transition-transform z-10 cursor-pointer outline-none focus:outline-none rounded-lg" aria-label="Open letter">
+        <button onClick={openLetter} className="relative w-28 h-28 rotate-[-10deg] sm:w-32 sm:h-32 transform hover:scale-110 transition-transform z-10 cursor-pointer outline-none focus:outline-none rounded-lg md:absolute md:bottom-[10%] md:left-[8%] lg:md:left-[2%] xl:md:left-[5%]" aria-label="Open letter">
             <components.EnvelopeIcon />
         </button>
 
-        <button onClick={openLetter} className="absolute top-1/2 left-1/2 -translate-x-1/2 transform translate-y-[170px] sm:translate-y-[230px] lg:translate-y-[270px] bg-white px-4 py-2 rounded-md shadow-md hover:shadow-lg transition-transform hover:scale-105 z-30 text-sm flex items-center gap-2 cursor-pointer outline-none focus:outline-none">
-            <components.BookIcon className="w-4 h-4" /> Read me ♡
-        </button>
-        
-        <div className="absolute top-[20%] right-[15%] w-16 h-16 rotate-12 sm:top-[15%] sm:right-[15%] md:right-[20%] lg:right-[24%] xl:right-[28%] z-20">
+        <div className="relative w-16 h-16 rotate-12 z-20 md:absolute md:top-[15%] md:right-[15%] lg:md:right-[24%] xl:md:right-[28%]">
             <components.WaxSealIcon className="text-brand-pink-400 drop-shadow-lg" />
         </div>
 
-        <div className="absolute top-[28%] right-[5%] w-44 rotate-6 sm:w-56 sm:top-[32%] sm:right-[5%] md:right-[8%] lg:right-[2%] xl:right-[5%] bg-[#fef6e4] p-4 rounded-lg shadow-lg transform transition-transform hover:rotate-3 z-10">
+        <div className="relative w-44 rotate-6 sm:w-56 bg-[#fef6e4] p-4 rounded-lg shadow-lg transform transition-transform hover:rotate-3 z-10 md:absolute md:top-[32%] md:right-[5%] lg:md:right-[2%] xl:md:right-[5%]">
             <p className="font-handwriting text-xl sm:text-2xl leading-tight text-gray-600">
                 Lights will guide you home, and ignite your bones, and I will try to fix you.
             </p>
@@ -579,19 +619,19 @@ const App: React.FC = () => {
              </div>
         </div>
 
-        <div className="absolute top-[78%] right-[8%] w-20 h-24 rotate-[-3deg] sm:w-24 sm:top-[72%] sm:right-[5%] md:top-[60%] md:right-[12%] lg:right-[8%] z-10">
+        <div className="relative w-20 h-24 rotate-[-3deg] sm:w-24 z-10 md:absolute md:top-[60%] md:right-[12%] lg:md:right-[8%]">
             <components.CandleIcon />
         </div>
 
-        <a href="#section-love" className="absolute bottom-[20%] sm:bottom-0 left-1/2 -translate-x-1/2 bg-gray-100 px-6 py-2 rounded-full shadow-md hover:shadow-lg transition-transform hover:scale-105 z-10 text-sm outline-none focus:outline-none">
+        <a href="#section-love" className="relative bg-gray-100 px-6 py-2 rounded-full shadow-md hover:shadow-lg transition-transform hover:scale-105 z-10 text-sm outline-none focus:outline-none md:absolute md:bottom-0 md:left-1/2 md:-translate-x-1/2">
           02 — Things I love about you ♡
         </a>
         
-        <div className="absolute bottom-[-2%] right-[-10%] sm:right-0 md:right-[-5%] lg:right-[-2%] w-32 h-auto sm:w-40 opacity-70 z-0">
+        <div className="hidden md:block absolute bottom-[-2%] right-[-10%] sm:right-0 md:right-[-5%] lg:right-[-2%] w-32 h-auto sm:w-40 opacity-70 z-0">
           <components.VinylIcon className="text-brand-pink-300" />
         </div>
 
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-[90%] max-w-xs rotate-0 sm:w-80 sm:left-auto sm:right-5 sm:-translate-x-0 sm:bottom-[8%] md:bottom-[4%] md:right-[8%] lg:right-[2%] xl:right-[5%] sm:rotate-[-2deg] z-20 transform transition-transform hover:rotate-[-1deg]">
+        <div className="relative w-[90%] max-w-xs rotate-0 sm:w-80 sm:rotate-[-2deg] z-20 transform transition-transform hover:rotate-[-1deg] md:absolute md:left-auto md:right-5 md:bottom-[4%] lg:md:right-[2%] xl:md:right-[5%]">
             <h2 className="font-handwriting text-xl text-center text-gray-600 mb-2">
                 <span className="bg-brand-pink-200 px-2 py-0.5">Songs that remind me of you</span>
             </h2>
