@@ -698,10 +698,6 @@ const App: React.FC = () => {
              </div>
         </div>
 
-        <div className="relative w-20 h-24 rotate-[-3deg] sm:w-24 z-10 md:absolute md:top-[60%] md:right-[12%] lg:md:right-[8%]">
-            <components.CandleIcon />
-        </div>
-
         <a href="#section-love" className="relative bg-gray-100 px-6 py-2 rounded-full shadow-md hover:shadow-lg transition-transform hover:scale-105 z-10 text-sm outline-none focus:outline-none md:absolute md:bottom-0 md:left-1/2 md:-translate-x-1/2">
           02 — Cose che amo di te ♡
         </a>
